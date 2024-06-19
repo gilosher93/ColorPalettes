@@ -1,12 +1,11 @@
 package com.gilosher.colorpalettes.navigation
 
-import kotlinx.serialization.Serializable
+sealed class ScreenRoute(val route: String) {
+    data object PaletteList : ScreenRoute(Route.PALETTE_LIST.name)
+    data object CreatePalette : ScreenRoute(Route.CREATE_PALETTE.name)
+}
 
-sealed class ScreenRoute {
-
-    @Serializable
-    data object PaletteList: ScreenRoute()
-
-    @Serializable
-    data object CreatePalette: ScreenRoute()
+enum class Route {
+    PALETTE_LIST,
+    CREATE_PALETTE
 }

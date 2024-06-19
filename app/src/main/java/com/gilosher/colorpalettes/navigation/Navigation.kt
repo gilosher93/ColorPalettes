@@ -16,16 +16,20 @@ fun Navigation(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = ScreenRoute.PaletteList
+        startDestination = ScreenRoute.PaletteList.route
     ) {
-        composable<ScreenRoute.PaletteList> {
+        composable(
+            route = ScreenRoute.PaletteList.route
+        ) {
             PaletteListScreen(
                 navigateToCreatePalette = {
-                    navController.navigate(ScreenRoute.CreatePalette)
+                    navController.navigate(ScreenRoute.CreatePalette.route)
                 }
             )
         }
-        composable<ScreenRoute.CreatePalette> {
+        composable(
+            route = ScreenRoute.CreatePalette.route
+        ) {
             CreatePaletteScreen(
                 navigateBack = {
                     navController.navigateUp()

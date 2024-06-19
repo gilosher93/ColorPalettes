@@ -7,12 +7,18 @@ data class ColorPalette(
     val id: String,
     val timestamp: Long,
     val colors: List<Color>
-)
+) {
+    companion object {
+        fun create(colors: List<Color>) = ColorPalette(
+            id = UUID.randomUUID().toString(),
+            timestamp = System.currentTimeMillis(),
+            colors = colors
+        )
+    }
+}
 
 fun List<List<Int>>.toColorPalette() =
-    ColorPalette(
-        id = UUID.randomUUID().toString(),
-        timestamp = System.currentTimeMillis(),
+    ColorPalette.create(
         colors = map { color ->
             Color(
                 red = color[0],

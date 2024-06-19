@@ -1,9 +1,12 @@
 package com.gilosher.colorpalettes.features.create_palette.data
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gilosher.colorpalettes.features.color_palette.ColorsRepo
+import com.gilosher.colorpalettes.features.color_palette.model.ColorPalette
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,17 +18,29 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreatePaletteViewModel @Inject constructor(
-    private val colorsRepo: ColorsRepo
+    private val colorsRepo: ColorsRepo,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _sideEffectChannel = Channel<CreatePaletteSideEffect>()
     val sideEffect = _sideEffectChannel.receiveAsFlow()
 
-    private val _screenState = MutableStateFlow(CreatePaletteScreenState())
+    private val _screenState = MutableStateFlow(
+        CreatePaletteScreenState(
+            selectedBgColor = savedStateHandle.get<Int?>(SELECTED_BG_COLOR_KEY)?.let { Color(it) },
+            palette = savedStateHandle.get<String?>(COLOR_PALETTE_KEY)?.let {
+                ColorPalette.create(
+                    colors = it.split(",").map { color -> Color(color.toInt()) }
+                )
+            }
+        )
+    )
     val screenState = _screenState.asStateFlow()
 
     init {
-        generatePalette()
+        if (screenState.value.palette == null) {
+            generatePalette()
+        }
     }
 
     fun onEvent(event: CreatePaletteEvent) {
@@ -37,6 +52,7 @@ class CreatePaletteViewModel @Inject constructor(
     }
 
     private fun selectBgColor(color: Color) {
+        savedStateHandle[SELECTED_BG_COLOR_KEY] = color.toArgb()
         _screenState.update { state ->
             state.copy(
                 selectedBgColor = color
@@ -53,6 +69,8 @@ class CreatePaletteViewModel @Inject constructor(
                 )
             }
             val colorPalette = colorsRepo.generateColor()
+            savedStateHandle[COLOR_PALETTE_KEY] =
+                colorPalette?.colors.orEmpty().map { it.toArgb() }.joinToString(",")
             _screenState.update { state ->
                 state.copy(
                     loading = false,
@@ -68,5 +86,10 @@ class CreatePaletteViewModel @Inject constructor(
             colorsRepo.addColorPalette(palette)
             _sideEffectChannel.send(CreatePaletteSideEffect.NavigateBack)
         }
+    }
+
+    companion object {
+        const val COLOR_PALETTE_KEY = "color_palette"
+        const val SELECTED_BG_COLOR_KEY = "selected_bg_color"
     }
 }
