@@ -11,6 +11,10 @@ android {
     namespace = "com.gilosher.colorpalettes"
     compileSdk = 34
 
+    buildFeatures.apply {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.gilosher.colorpalettes"
         minSdk = 28
@@ -25,7 +29,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"http://colormind.io/\""
+            )
+        }
         release {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "http://colormind.io/"
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -62,6 +78,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.retrofit)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

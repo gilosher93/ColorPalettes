@@ -13,14 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.gilosher.colorpalettes.features.create_palette.data.CreatePaletteViewModel
+import com.gilosher.colorpalettes.features.palette_list.data.PaletteListViewModel
 
 @Composable
 fun PaletteListScreen(
     modifier: Modifier = Modifier,
     navigateToCreatePalette: () -> Unit = {}
 ) {
-    val viewModel = hiltViewModel<CreatePaletteViewModel>()
+    val viewModel = hiltViewModel<PaletteListViewModel>()
 
     PaletteListScreenContent(
         modifier = modifier,

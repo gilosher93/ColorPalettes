@@ -26,7 +26,11 @@ fun Navigation(
             )
         }
         composable<ScreenRoute.CreatePalette> {
-            CreatePaletteScreen()
+            CreatePaletteScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }
