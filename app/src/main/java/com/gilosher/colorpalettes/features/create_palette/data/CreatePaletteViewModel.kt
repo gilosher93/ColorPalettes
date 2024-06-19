@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gilosher.colorpalettes.features.color_palette.ColorsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,6 +16,9 @@ import javax.inject.Inject
 class CreatePaletteViewModel @Inject constructor(
     private val colorsRepo: ColorsRepo
 ) : ViewModel() {
+
+    private val _sideEffectChannel = Channel<CreatePaletteSideEffect>()
+    val sideEffect = _sideEffectChannel.receiveAsFlow()
 
     private val _screenState = MutableStateFlow(CreatePaletteScreenState())
     val screenState = _screenState.asStateFlow()
@@ -48,6 +53,10 @@ class CreatePaletteViewModel @Inject constructor(
     }
 
     private fun savePalette() {
-
+        viewModelScope.launch {
+            val palette = screenState.value.palette ?: return@launch
+            colorsRepo.addColorPalette(palette)
+            _sideEffectChannel.send(CreatePaletteSideEffect.NavigateBack)
+        }
     }
 }

@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gilosher.colorpalettes.features.create_palette.data.CreatePaletteEvent
 import com.gilosher.colorpalettes.features.create_palette.data.CreatePaletteScreenState
+import com.gilosher.colorpalettes.features.create_palette.data.CreatePaletteSideEffect
 import com.gilosher.colorpalettes.features.create_palette.data.CreatePaletteViewModel
 import com.gilosher.colorpalettes.ui.theme.ColorPalettesTheme
 import com.gilosher.colorpalettes.utils.bouncingClickable
@@ -50,6 +52,14 @@ fun CreatePaletteScreen(
 ) {
     val viewModel = hiltViewModel<CreatePaletteViewModel>()
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when (sideEffect) {
+                CreatePaletteSideEffect.NavigateBack -> navigateBack()
+            }
+        }
+    }
 
     CreatePaletteScreenContent(
         screenState = screenState,
