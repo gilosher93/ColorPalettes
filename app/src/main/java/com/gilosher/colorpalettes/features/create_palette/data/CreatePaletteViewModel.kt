@@ -1,5 +1,6 @@
 package com.gilosher.colorpalettes.features.create_palette.data
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gilosher.colorpalettes.features.color_palette.ColorsRepo
@@ -31,6 +32,15 @@ class CreatePaletteViewModel @Inject constructor(
         when (event) {
             CreatePaletteEvent.OnGeneratePaletteClicked -> generatePalette()
             CreatePaletteEvent.SavePaletteClicked -> savePalette()
+            is CreatePaletteEvent.OnColorSelected -> selectBgColor(event.color)
+        }
+    }
+
+    private fun selectBgColor(color: Color) {
+        _screenState.update { state ->
+            state.copy(
+                selectedBgColor = color
+            )
         }
     }
 

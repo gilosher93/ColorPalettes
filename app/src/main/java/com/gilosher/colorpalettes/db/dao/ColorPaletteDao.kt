@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ColorPaletteDao {
-    @Query("SELECT * FROM colors ORDER BY timestamp DESC")
+    @Query("SELECT * FROM colors ORDER BY timestamp ASC")
     fun getAllPalettes(): Flow<List<ColorPaletteDb>>
 
     @Insert
