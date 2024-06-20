@@ -172,7 +172,7 @@ fun CreatePaletteScreenContent(
                 .padding(16.dp)
                 .fillMaxWidth()
                 .height(56.dp),
-            enabled = !screenState.loading,
+            enabled = !screenState.loading && !screenState.savingPalette,
             onClick = {
                 savePalette()
             }

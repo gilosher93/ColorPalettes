@@ -83,6 +83,7 @@ class CreatePaletteViewModel @Inject constructor(
     private fun savePalette() {
         viewModelScope.launch {
             val palette = screenState.value.palette ?: return@launch
+            _screenState.update { state -> state.copy(savingPalette = true) }
             colorsRepo.addColorPalette(palette)
             _sideEffectChannel.send(CreatePaletteSideEffect.NavigateBack)
         }

@@ -3,6 +3,7 @@ package com.gilosher.colorpalettes.features.palette_list.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -83,7 +84,9 @@ fun PaletteListScreenContent(
         Column {
             TopAppBar(title = { Text(text = "Color Palettes") })
             if (screenState.paletteList.isNotEmpty()) {
-                LazyColumn {
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 70.dp)
+                ) {
                     items(screenState.paletteList) { colorPalette ->
                         ColorPaletteItem(
                             colorPalette = colorPalette,

@@ -39,7 +39,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "http://colormind.io/"
+                "\"http://colormind.io/\""
             )
             isMinifyEnabled = false
             proguardFiles(

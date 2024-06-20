@@ -5,6 +5,7 @@ import com.gilosher.colorpalettes.features.color_palette.model.ColorPalette
 
 data class CreatePaletteScreenState(
     val loading: Boolean = false,
+    val savingPalette: Boolean = false,
     val palette: ColorPalette? = null,
     val selectedBgColor: Color? = null
 )
