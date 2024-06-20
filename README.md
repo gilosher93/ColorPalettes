@@ -10,3 +10,6 @@ Kotlin, Flows, Compose, Hilt, Room, Retrofit.
 3. Configuration change (rotate screen, change language etc,)
 4. Persistency (Room)
 5. Color change animation
+
+## Notes
+I tried to use the newest version of compose navigation `Version 2.8.0-beta03` but it crashes in runtime when trying to restore state after process death.
